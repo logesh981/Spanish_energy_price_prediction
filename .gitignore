@@ -1,0 +1,44 @@
+.env
+k8s_ca.crt
+mlflow.db
+ec2-3-84-248-7.compute-1.amazonaws.com/
+ec2-3-88-35-26.compute-1.amazonaws.com/
+ec2-3-89-152-136.compute-1.amazonaws.com/
+environments.txt
+mlruns/
+__pycache__
+terraform/.terraform/
+
+
+
+# Crash log files
+crash.log
+crash.*.log
+
+
+
+terraform/*.tfstate
+terraform/*.tfstate.backup
+terraform/crash.log
+terraform/*.tfvars
+terraform/override.tf
+terraform/tfplan
+terraform/.terraform.lock.hcl
+
+# Include override files you do wish to add to version control using negated pattern
+# !example_override.tf
+
+# Include tfplan files to ignore the plan output of command: terraform plan -out=tfplan
+# example: *tfplan*
+tfplan
+
+destroyplan
+# Ignore CLI configuration files
+.terraformrc
+terraform.rc
+
+ca.crt
+
+ca_base64.txt
+
+integration_test/test.py

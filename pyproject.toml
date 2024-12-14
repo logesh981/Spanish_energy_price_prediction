@@ -1,0 +1,18 @@
+[tool.pylint.messages_control]
+
+disable = [
+    "missing-function-docstring",
+    "missing-final-newline",
+    "missing-class-docstring",
+    "missing-module-docstring",
+    "invalid-name",
+    "too-few-public-methods",
+    "trailing-whitespace",
+    "line-too-long",
+    "comparison-with-itself",
+    "comparison-of-constants",
+]
+
+[tool.black]
+target-version = ["py312"]
+skip-string-normalization = true

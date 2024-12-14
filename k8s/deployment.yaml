@@ -1,0 +1,38 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: energy-pred-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: energy-pred
+  template:
+    metadata:
+      labels:
+        app: energy-pred
+    spec:
+      containers:
+        - name: energy-pred
+          image: 084828586121.dkr.ecr.us-east-1.amazonaws.com/energy-price-prediction:20241208172952
+          resources:
+            limits:
+              memory: "1024Mi"
+              cpu: "800m"
+          ports:
+            - containerPort: 9696
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: energy-pred-srv
+spec:
+  type: LoadBalancer
+  selector:
+    app: energy-pred
+  ports:
+    - name: energy-pred
+      protocol: TCP
+      port: 80
+      targetPort: 9696

@@ -1,0 +1,31 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = false
+name = "pip_conf_index_global"
+
+[packages]
+pandas = "*"
+numpy = "*"
+scikit-learn = "*"
+xgboost = "*"
+mlflow = "*"
+hyperopt = "*"
+setuptools = "*"
+boto3 = "*"
+python-dotenv = "*"
+psycopg2-binary = "*"
+flask = "*"
+gunicorn = "*"
+jinja2 = "*"
+certifi = "*"
+
+[dev-packages]
+ipykernel = "*"
+awscli = "*"
+pytest = "*"
+pylint = "*"
+black = "*"
+pre-commit = "*"
+
+[requires]
+python_version = "3.12"
