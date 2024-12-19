@@ -4,6 +4,7 @@ import boto3
 import mlflow
 from dotenv import load_dotenv
 
+
 load_dotenv()
 s3_client = boto3.client(
     's3',
@@ -31,7 +32,7 @@ def get_model_location(run_id):
 
 def load_model(run_id):
     model_path = get_model_location(run_id)
-    model = mlflow.pyfunc.load_model(model_path)
+    model = mlflow.xgboost.load_model(model_path)
     return model
 
 
