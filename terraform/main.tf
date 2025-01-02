@@ -1,3 +1,13 @@
+terraform {
+  backend "s3" {
+    bucket         = "lv-terraform-state-bucket"
+    key            = "path/to/my/terraform.tfstate"
+    region         = "us-east-1"
+    dynamodb_table = "my-terraform-lock-table"
+    encrypt        = true
+  }
+}
+
 resource "aws_vpc" "main" {
   cidr_block           = "10.0.0.0/16"
   enable_dns_hostnames = true
@@ -93,4 +103,16 @@ module "eks" {
       instance_types = ["t3.medium"]
     }
   }
+}
+
+data "aws_eks_cluster" "cluster" {
+  name = module.eks.cluster_name
+}
+
+data "aws_eks_cluster_auth" "cluster" {
+  name = module.eks.cluster_name
+}
+
+resource "kubectl_manifest" "example" {
+  yaml_body = file("${path.module}/../k8s/deployment.yaml")
 }
