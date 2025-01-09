@@ -38,7 +38,7 @@ jobs:
         working-directory: 'terraform'
         if: ${{ steps.tf-plan.outcome }} == 'success'
         run: |
-          terraform apply -auto-approve tfplan -lock=true
+          terraform apply -auto-approve tfplan
           echo "::set-output name=ecr_repo::$(terraform output ecr_repo | xargs)"
       - name: Release Terraform Lock
         if: always()
@@ -46,7 +46,8 @@ jobs:
         run: |
           dynamodb_table_id=$(terraform show -json tfplan | jq -r '.resource_changes[] | select(.type == "aws_dynamodb_table") | .change.after.id')
           if [ -n "$dynamodb_table_id" ]; then
-            terraform force-unlock -force $dynamodb_table_id
+            terraform force-unlock -force $
+            
           else
             echo "No aws_dynamodb_table resource found in the tfplan."
           fi
