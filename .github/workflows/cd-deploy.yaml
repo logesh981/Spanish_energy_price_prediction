@@ -24,20 +24,32 @@ jobs:
           terraform_wrapper: false
 
       # Define the infrastructure
-      - name: TF plan
+      - name: Terraform Init
+        working-directory: 'terraform'
+        run: terraform init -lock=true
+
+      - name: Terraform Plan
         id: tf-plan
         working-directory: 'terraform'
-        run: |
-          terraform init && terraform plan
+        run: terraform plan -out=tfplan -lock=true
 
       - name: TF Apply
         id: tf-apply
         working-directory: 'terraform'
         if: ${{ steps.tf-plan.outcome }} == 'success'
         run: |
-          terraform apply -auto-approve
+          terraform apply -auto-approve tfplan -lock=true
           echo "::set-output name=ecr_repo::$(terraform output ecr_repo | xargs)"
-
+      - name: Release Terraform Lock
+        if: always()
+        working-directory: 'terraform'
+        run: |
+          dynamodb_table_id=$(terraform show -json tfplan | jq -r '.resource_changes[] | select(.type == "aws_dynamodb_table") | .change.after.id')
+          if [ -n "$dynamodb_table_id" ]; then
+            terraform force-unlock -force $dynamodb_table_id
+          else
+            echo "No aws_dynamodb_table resource found in the tfplan."
+          fi
       # # Build-Push
       # - name: Login to Amazon ECR
       #   id: login-ecr
